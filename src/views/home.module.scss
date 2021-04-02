@@ -1,0 +1,26 @@
+@use '../commonStyles/variables' as v;
+
+.home {
+  .content {
+    margin: 20px 10%;
+    .headerText {
+      font-size: 48px;
+      font-weight: 700;
+      color: v.$headerColor;
+      margin-bottom: 10px;
+    }
+
+    .tabs {
+      span {
+        display: inline-block;
+        padding: 10px 20px;
+        color: v.$textColor;
+
+        &.active {
+          color: v.$activeColor;
+          border-bottom: 5px solid v.$activeColor;
+        }
+      }
+    }
+  }
+}
