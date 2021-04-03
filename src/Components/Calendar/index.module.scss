@@ -3,21 +3,33 @@
 .calendar {
   table {
     border-collapse: collapse;
-    tr {
-      td, th {
-        margin: 5px;
-        border: 1px solid black;
-        padding: 3px;
-        text-align: center;
-      }
+    tbody {
+      tr {
+        td {
+          &:hover {
+            background-color: #e6e6e6;
+            cursor: pointer;
+          }
+        }
+        td, th {
+          margin: 5px;
+          border: 1px solid black;
+          padding: 3px;
+          text-align: center;
+        }
+  
+        th {
+          font-weight: bold;
+          background-color: #e6e6e6;
+        }
+  
+        .faded {
+          color: #506d85;
+        }
 
-      th {
-        font-weight: bold;
-        background-color: #e6e6e6;
-      }
-
-      .faded {
-        color: #506d85;
+        .active {
+          color: aqua;
+        }
       }
     }
   }
