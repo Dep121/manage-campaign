@@ -1,19 +1,23 @@
 import React from 'react';
 import { MONTH, _MS_PER_DAY } from '../../constants';
+import { useTranslate } from '../../Containers/hooks';
 import s from './index.module.scss';
 
 function DateEle({ camp }) {
+
+  const { t } = useTranslate();
+
   let today = new Date();
   const d = new Date(camp.createdOn);
   const dateString = `${MONTH[d.getMonth()]} ${d.getFullYear()}, ${d.getDate()}`;
   const diffDays = Math.floor((today - d) / _MS_PER_DAY);
   let diffDaysString = '';
   if (diffDays < 0) {
-    diffDaysString = `${Math.abs(diffDays)} Days ahead`;
+    diffDaysString = `${Math.abs(diffDays)} ${t('Days ahead')}`;
   } else if (diffDays === 0) {
-    diffDaysString = ` Live Now`;
+    diffDaysString = ` ${t('Live Now')}`;
   } else {
-    diffDaysString = `${diffDays} Days ago`;
+    diffDaysString = `${diffDays} ${t('Days ago')}`;
   }
 
   return (

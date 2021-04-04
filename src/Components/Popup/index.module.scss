@@ -1,6 +1,12 @@
 @use '../../commonStyles/variables' as v;
 
 .popup {
+  width: inherit;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
   .upper {
     display: flex;
     margin-bottom: 20px;

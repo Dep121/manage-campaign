@@ -1,6 +1,12 @@
 
 
 .calendar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: inherit;
+  height: inherit;
+
   table {
     border-collapse: collapse;
     tbody {

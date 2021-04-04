@@ -4,6 +4,7 @@ import file from '../../assets/file.png';
 import stats from '../../assets/stats.png';
 import calendar from '../../assets/calendar.png';
 import Calendar from '../Calendar';
+import { useTranslate } from '../../Containers/hooks';
 
 function ActionEle({ camp, dateChange, setOverlay, setOverlayData }) {
 
@@ -11,6 +12,8 @@ function ActionEle({ camp, dateChange, setOverlay, setOverlayData }) {
     setOverlay(false);
     dateChange(date, isChanged, camp);
   }
+
+  const { t } = useTranslate();
 
   const campDate = new Date(camp.createdOn);
 
@@ -23,7 +26,7 @@ function ActionEle({ camp, dateChange, setOverlay, setOverlayData }) {
         </div>
         <div className={s.pair}>
           <img src={stats}></img>
-          <span>Report</span>
+          <span>{t('Report')}</span>
         </div>
         <div onClick={() => {
           setOverlayData(
@@ -36,7 +39,7 @@ function ActionEle({ camp, dateChange, setOverlay, setOverlayData }) {
           setOverlay(true);
         }} className={s.pair}>
           <img src={calendar}></img>
-          <span>Schedule Again</span>
+          <span>{t('Schedule Again')}</span>
         </div>
       </div>
     </div>

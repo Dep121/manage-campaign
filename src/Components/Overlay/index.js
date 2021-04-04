@@ -1,8 +1,12 @@
 import React from 'react';
 import s from './index.module.scss';
 import { ReactComponent as Close } from '../../assets/close.svg';
+import { useTranslate } from '../../Containers/hooks';
 
 function Overlay({ children, onClose, showHeader, showClose, showCloseBtn }) {
+
+  const { t } = useTranslate();
+
   return (<div className={s.overlayWrapper}>
     <div className={s.overlay}>
       {
@@ -22,7 +26,7 @@ function Overlay({ children, onClose, showHeader, showClose, showCloseBtn }) {
       </div>
       {
         showCloseBtn &&
-        <button className={s.button} onClick={onClose}>Close</button>
+        <button className={s.button} onClick={onClose}>{t("Close")}</button>
       }
     </div>
   </div>)

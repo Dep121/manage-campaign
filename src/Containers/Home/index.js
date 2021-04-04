@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import Table from '../../Components/Table';
-import { MONTH, _MS_PER_DAY } from '../../constants';
 import { isToday } from '../../utility';
 import s from './index.module.scss';
 import price from '../../assets/price.png';
-import pubG from '../../assets/Bitmap.png'
 import Overlay from '../../Components/Overlay';
 import Popup from '../../Components/Popup';
 import ActionEle from '../../Components/ActionEle';
 import DateEle from '../../Components/DateEle';
 import CampaignEle from '../../Components/CampaignEle';
+import { useTranslate } from '../hooks';
 
 function HomeC() {
   const [tabs, setTabs] = useState([false, false, true]);
@@ -17,8 +16,13 @@ function HomeC() {
   const [pastTabData, setPastTabData] = useState([]);
   const [futureTabData, setFutureTabData] = useState([]);
   const [toggleOverlay, setOverlay] = useState(false);
-  const [overlayData, setOverlayData] = useState({});
+  const [overlayData, setOverlayData] = useState(null);
 
+  const { t } = useTranslate();
+
+  /**
+   * fetch data from mock api and filter the data
+   */
   const getData = async () => {
     const { data } = await (await fetch('https://apimocha.com/manage-campaign/campaign-data')).json();
     let campaignData = [[], [], []];
@@ -48,6 +52,14 @@ function HomeC() {
   const tabClick = (index) => {
     setTabs(tabs.map((_, i) => index === i));
   }
+
+  /**
+   * 
+   * @param {Date} date rescheduled date
+   * @param {Number} isChanged -1 for previous date, 0 for same date, 1 for upcoming date
+   * @param {Object} camp Details of one campaign
+   * @returns 
+   */
 
   const dateChange = (date, isChanged, camp) => {
     let newDate = new Date(date);
@@ -101,6 +113,11 @@ function HomeC() {
     }
   }
 
+  /**
+   * Make element for each column
+   * @param {Object} camp Details of one campaign
+   * @returns {Component} - component to render
+   */
   const makeElement = (camp) => {
     return [1, 2, 3, 4].map(col => {
       if (col === 1) {
@@ -110,11 +127,11 @@ function HomeC() {
       } else if (col === 3) {
         return (
           <div onClick={() => {
-            setOverlayData(<Popup imgSrc={pubG} name={camp.name} region={camp.region} />);
+            setOverlayData(<Popup imgSrc={camp.image_url} name={camp.name} region={camp.region} />);
             setOverlay(!toggleOverlay);
           }} className={s.view}>
             <img src={price}></img>
-            <span>View Pricing</span>
+            <span>{t('View Pricing')}</span>
           </div>
         )
       } else {
@@ -142,15 +159,14 @@ function HomeC() {
 
   return (
     <div className={s.content}>
-      <div className={s.headerText}>Manage Campaigns</div>
+      <div className={s.headerText}>{t('Manage Campaigns')}</div>
       <div className={s.tabs}>
-        <span onClick={() => tabClick(0)} className={`${tabs[0] ? s.active : ''}`}>Upcoming Campaigns</span>
-        <span onClick={() => tabClick(1)} className={`${tabs[1] ? s.active : ''}`}>Live Campaigns</span>
-        <span onClick={() => tabClick(2)} className={`${tabs[2] ? s.active : ''}`}>Past Campaigns</span>
+        <span onClick={() => tabClick(0)} className={`${tabs[0] ? s.active : ''}`}>{t('Upcoming Campaigns')}</span>
+        <span onClick={() => tabClick(1)} className={`${tabs[1] ? s.active : ''}`}>{t('Live Campaigns')}</span>
+        <span onClick={() => tabClick(2)} className={`${tabs[2] ? s.active : ''}`}>{t('Past Campaigns')}</span>
       </div>
 
-      {/* <Table columns={["DATE", "CAMPAIGN", "VIEW", "ACTIONS"]} rows={[["deepak", "kumar", "pandey", "hello"], ["pandey", "deepak", "kumar", "hello"], ]}/> */}
-      <Table id={tabs.findIndex((bool => bool))} columns={["DATE", "CAMPAIGN", "VIEW", "ACTIONS"]} rows={currentTableData()} />
+      <Table id={tabs.findIndex((bool => bool))} columns={[t("DATE"), t("CAMPAIGN"), t("VIEW"), t("ACTIONS")]} rows={currentTableData()} />
 
       {
         toggleOverlay &&

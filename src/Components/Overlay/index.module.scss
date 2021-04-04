@@ -45,6 +45,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 320px;
+      height: 350px;
     }
 
     .button {
@@ -52,6 +54,7 @@
       width: 85px;
       height: 48px;
       border: 2px solid #181b34;
+      font-size: 20px;
     }
   }
 }

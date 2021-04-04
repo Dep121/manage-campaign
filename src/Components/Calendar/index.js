@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import s from './index.module.scss';
 import { MONTH } from '../../constants';
 import { isSelectedDate } from '../../utility';
-
-
-
+import { useTranslate } from '../../Containers/hooks';
 
 function Calendar({ defaultYear, defaultMonth, defaultDate, dateClick }) {
+
+  const { t } = useTranslate();
 
   const [month, setMonth] = useState(defaultMonth);
   const [year, setYear] = useState(defaultYear);
@@ -63,7 +63,7 @@ function Calendar({ defaultYear, defaultMonth, defaultDate, dateClick }) {
     <div className={s.calendar}>
       <div className={s.yearMonth}>
         <label htmlFor={"Year"}>
-          <span>Year:</span>
+          <span>{t('Year')}:</span>
           <select value={year} onChange={yearChange}>
             {
               [1, 2, 3, 4, 5, 6, 7].map(ele => {
@@ -75,7 +75,7 @@ function Calendar({ defaultYear, defaultMonth, defaultDate, dateClick }) {
           </select>
         </label>
         <label htmlFor={"Month"}>
-          <span>Month:</span>
+          <span>{t('Month')}:</span>
           <select value={month} onChange={monthChange}>
             {
               MONTH.map((ele, i) => {

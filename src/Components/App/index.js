@@ -1,9 +1,13 @@
 import React from 'react';
 import Home from '../../views/Home';
+import { TranslatorProvider } from '../TranslatorProvider';
 
 function App({}) {
+
   return(
-    <Home  />
+    <TranslatorProvider defaultLang={"english"}>
+      <Home />
+    </TranslatorProvider>
   )
 }
 

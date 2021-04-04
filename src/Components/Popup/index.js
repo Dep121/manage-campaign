@@ -1,7 +1,11 @@
 import React from 'react';
+import { useTranslate } from '../../Containers/hooks';
 import s from './index.module.scss';
 
 function Popup({ imgSrc, name, region }) {
+
+  const { t } = useTranslate();
+
   return (
     <div className={s.popup}>
       <div className={s.upper}>
@@ -11,18 +15,18 @@ function Popup({ imgSrc, name, region }) {
           <div>{region}</div>
         </div>
       </div>
-      <div className={s.headerText}>Pricing</div>
+      <div className={s.headerText}>{t('Pricing')}</div>
       <div className={s.rows}>
         <div className={s.row}>
-          <span>1 Week - 1 Month</span>
+          <span>{t("1 Week - 1 Month")}</span>
           <span>$ 100.00</span>
         </div>
         <div className={s.row}>
-          <span>6 Months</span>
+          <span>{t("6 Months")}</span>
           <span>$ 500.00</span>
         </div>
         <div className={s.row}>
-          <span>1 Year</span>
+          <span>{t("1 Year")}</span>
           <span>$ 900.00</span>
         </div>
       </div>
