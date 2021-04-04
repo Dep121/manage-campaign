@@ -3,15 +3,13 @@ import Table from '../../Components/Table';
 import { MONTH, _MS_PER_DAY } from '../../constants';
 import { isToday } from '../../utility';
 import s from './index.module.scss';
-import sample from '../../assets/sample.png';
 import price from '../../assets/price.png';
-import file from '../../assets/file.png';
-import stats from '../../assets/stats.png';
-import calendar from '../../assets/calendar.png';
 import pubG from '../../assets/Bitmap.png'
 import Overlay from '../../Components/Overlay';
-import Calendar from '../../Components/Calendar';
 import Popup from '../../Components/Popup';
+import ActionEle from '../../Components/ActionEle';
+import DateEle from '../../Components/DateEle';
+import CampaignEle from '../../Components/CampaignEle';
 
 function HomeC() {
   const [tabs, setTabs] = useState([false, false, true]);
@@ -51,89 +49,64 @@ function HomeC() {
     setTabs(tabs.map((_, i) => index === i));
   }
 
-  const dateElem = (camp) => {
-    let today = new Date();
-    const d = new Date(camp.createdOn);
-    const dateString = `${MONTH[d.getMonth()]} ${d.getFullYear()}, ${d.getDate()}`;
-    const diffDays = Math.floor((today - d) / _MS_PER_DAY);
-    const diffDaysString = `${diffDays} Days ago`;
+  const dateChange = (date, isChanged, camp) => {
+    let newDate = new Date(date);
+    const selectedTab = tabs.findIndex((bool => bool));
 
-    return (
-      <div>
-        <div>{dateString}</div>
-        <div>{diffDaysString}</div>
-      </div>
-    )
-  }
-
-  const campaignElement = (camp) => {
-    return (
-      <div className={s.campEle}>
-        <div className={s.campImg}>
-          <img src={sample} />
-        </div>
-        <div className={s.content}>
-          <div className={s.name}>{camp.name}</div>
-          <div className={s.region}>{camp.region}</div>
-        </div>
-      </div>
-    )
-  }
-
-  const ActionEle = ({ camp, tabs }) => {
-
-    const dateChange = (date, isChanged) => {
-      let newDate = new Date(date);
-      const selectedTab = tabs.findIndex((bool => bool));
-
-      if(isChanged === 1 && selectedTab === 2) {
-        const day = isToday(date);
-        if(day === -1) return;
-        if(day === 0){
-          // past to live
-          setLiveTabData([...liveTabData, {...camp, createdOn: newDate.getTime()}]);
-        }
-        if(day === 1) {
-          // past to future
-          setFutureTabData([...futureTabData, {...camp, createdOn: newDate.getTime()}]);
-        }
-        setPastTabData(pastTabData.filter(ele => ele.createdOn !== camp.createdOn));
+    // for past tab
+    if(selectedTab === 2 && isChanged === 1) {
+      const day = isToday(date);
+      if(day === -1) return;
+      if(day === 0){
+        // past to live
+        setLiveTabData([...liveTabData, {...camp, createdOn: newDate.getTime()}]);
       }
-
-      
+      if(day === 1) {
+        // past to future
+        setFutureTabData([...futureTabData, {...camp, createdOn: newDate.getTime()}]);
+      }
+      // remove from past
+      setPastTabData(pastTabData.filter(ele => ele.createdOn !== camp.createdOn));
     }
 
-    const campDate = new Date(camp.createdOn);
+    // for Upcoming tab
+    if(selectedTab === 0 && isChanged === -1) {
+      const day = isToday(date);
+      if(day === 1) return;
+      if(day === 0) {
+        // future to live
+        setLiveTabData([...liveTabData, {...camp, createdOn: newDate.getTime()}]);
+      }
+      if(day === -1) {
+        // future to past
+        setPastTabData([...pastTabData, {...camp, createdOn: newDate.getTime()}]);
+      }
+      // remove from future
+      setFutureTabData(futureTabData.filter(ele => ele.createdOn !== camp.createdOn));
+    }
 
-    return (
-      <div className={s.action}>
-        <img src={file}></img>
-        <span>CSV</span>
-        <img src={stats}></img>
-        <span>Report</span>
-        <div onClick={() => {
-          setOverlayData(
-            <Calendar
-              defaultYear={campDate.getFullYear()}
-              defaultMonth={campDate.getMonth()}
-              defaultDate={campDate.getDate()}
-              dateClick={dateChange}
-            />);
-          setOverlay(!toggleOverlay);
-        }} className={s.schedule}>
-          <img src={calendar}></img>
-          <span>Schedule Again</span>
-        </div>
-      </div>
-    )
+    // for Live tab
+    if(selectedTab === 1) {
+      if(isChanged === 0)  return;
+      if(isChanged === 1) {
+        // live to future
+        setFutureTabData([...futureTabData, {...camp, createdOn: newDate.getTime()}]);
+      }
+      if(isChanged === -1) {
+        // live to past
+        setPastTabData([...pastTabData, {...camp, createdOn: newDate.getTime()}]);
+      }
+      // remove from live
+      setLiveTabData(liveTabData.filter(ele => ele.createdOn !== camp.createdOn));
+    }
   }
 
   const makeElement = (camp) => {
     return [1, 2, 3, 4].map(col => {
       if (col === 1) {
-        return dateElem(camp);
+        return <DateEle camp={camp} />;
       } else if (col === 2) {
-        return campaignElement(camp);
+      return <CampaignEle camp={camp} />;
       } else if (col === 3) {
         return (
           <div onClick={() => {
@@ -145,7 +118,7 @@ function HomeC() {
           </div>
         )
       } else {
-        return <ActionEle camp={camp} tabs={tabs} />;
+        return <ActionEle camp={camp} dateChange={dateChange} setOverlay={setOverlay} setOverlayData={setOverlayData} />;
       }
     });
   }
@@ -167,7 +140,6 @@ function HomeC() {
     }
   }
 
-  let date = new Date();
   return (
     <div className={s.content}>
       <div className={s.headerText}>Manage Campaigns</div>

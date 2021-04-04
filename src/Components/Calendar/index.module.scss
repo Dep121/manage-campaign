@@ -33,4 +33,19 @@
       }
     }
   }
+
+  .yearMonth{
+    display: flex;
+    margin-bottom: 10px;
+    label {
+      display: block;
+      margin-right: 10px;
+      span{
+        margin-right: 5px;
+      }
+      select{
+        padding: 8px;
+      }
+    }
+  }
 }

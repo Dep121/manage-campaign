@@ -1,0 +1,50 @@
+@use '../../commonStyles/variables' as v;
+
+.action {
+  display: flex;
+  align-items: center;
+
+  .content {
+    display: flex;
+    .pair {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      img {
+        display: inline-block;
+        width: 30px;
+        margin-right: 8px;
+        cursor: pointer;
+      }
+      span {
+        margin-right: 20px;
+        cursor: pointer;
+        color: v.$textColor;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+  .content {
+    flex-wrap: wrap;
+    max-width: min-content;
+    .pair{
+      margin-bottom: 10px;
+    }
+  }
+    &:before {
+      content: "ACTION";
+      text-align: left;
+      align-self: center;
+      color: #556789;
+      margin-right: 10px;
+      min-width: 100px;
+    }
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

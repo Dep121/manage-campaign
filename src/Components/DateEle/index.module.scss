@@ -1,0 +1,35 @@
+@use '../../commonStyles/variables' as v;
+
+.dateEle{
+  display: flex;
+  
+  .content {
+    .str {
+      font-size: 16px;
+      font-weight: 400;
+      color: v.$textColor;
+      margin-bottom: 10px;
+    }
+    .diff {
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 400;
+      color: v.$LtextColor; 
+      span {
+        font-style: normal;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+    &:before {
+      content: "DATE";
+      text-align: left;
+      align-self: center;
+      color: #556789;
+      margin-right: 10px;
+      min-width: 100px;
+    }
+  }
+}

@@ -4,12 +4,14 @@ import s from './index.module.scss';
 function Table({ columns, rows, id }) {
   return (<div className={s.table}>
     <table>
-      <tbody>
+      <thead>
         <tr>
           {
-            columns.map(colName => <th key={id+colName}>{colName}</th>)
+            columns.map(colName => <th key={id + colName}>{colName}</th>)
           }
         </tr>
+      </thead>
+      <tbody>
         {
           rows.map((row, i) => {
             return (
